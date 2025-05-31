@@ -1,15 +1,16 @@
 # インストール方法
-1. Pythonをインストール
+1. Python, Visual C++再頒布可能パッケージをインストール
 2. Releaseから`Installer.exe`をダウンロード  
 3. 実行  
 4. インストール完了後、プリンター一覧に **Meijo ICP Virtual Printer** が表示されていることを確認
 
-Python 3.10.6で動作確認済みです
+Python 3.13.3で動作確認済みです
 
 # トラブルシューティング
 
 - **Can't not load DLL等のエラーが発生 / 印刷の設定画面が出てこない**
-  [配布サイト](https://learn.microsoft.com/ja-jp/cpp/windows/latest-supported-vc-redist?view=msvc-170)からVisual C++ 再頒布可能パッケージをインストールしてください
+  Visual C++ 再頒布可能パッケージをインストールしてください
+  [配布サイト](https://learn.microsoft.com/ja-jp/cpp/windows/latest-supported-vc-redist?view=msvc-170)
 
 - **ポートが不明のエラーが出てインストールできない**  
   Windowsの言語設定が日本語以外の場合にエラーが出ることがあります。  
@@ -20,8 +21,9 @@ Python 3.10.6で動作確認済みです
     ```
 
 - **別のフォルダにインストールしたい**  
-  Startupフォルダのリンク先だけ変更すれば自由にフォルダは移動できます。  
+  Startupフォルダのリンク先(`%UserProfile%/AppData/Local/MeijoPrintService/python/Scripts/python.exe`)だけ変更すれば自由にフォルダは移動できます。  
   インストーラーは現時点では対応していません（そのうち対応予定です）。
+  Tempフォルダではなく`print_server.py`があるフォルダに一時ファイルを作成するため書き込みできないフォルダに移動すると使用できなくなります(修正予定)
 
 # アンインストール方法
 
@@ -39,9 +41,5 @@ Python 3.10.6で動作確認済みです
 
 # Special Thanks
 
-The implementation logic of this software was inspired by the open-source project:
-
 - [virtualPrinter](https://github.com/TheHeadlessSourceMan/virtualPrinter)  
-  A Python-based virtual printer using PostScript over a TCP socket.
-
-No code was directly reused; the project was built from scratch based on original implementations.
+- [GhostScript](https://ghostscript.com/)
