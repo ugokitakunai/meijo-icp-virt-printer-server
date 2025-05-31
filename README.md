@@ -8,7 +8,12 @@
 
 - **ポートが不明のエラーが出てインストールできない**  
   Windowsの言語設定が日本語以外の場合にエラーが出ることがあります。  
-  コマンドプロンプトで以下を実行すると手動でインストール可能です（コマンドは省略）。
+  コマンドプロンプトで以下を実行すると手動でインストール可能です
+    ```cmd
+    cscript "C:/Windows/System32/Printing_Admin_Scripts/en-US/prnport.vbs" -a -r "Meijo ICP Virtual Printer Port" -h "127.0.0.1" -n 9101 -o raw
+    rundll32 printui.dll,PrintUIEntry /if /b "Meijo ICP Virtual Printer" /r "Meijo ICP Virtual Printer Port" /m "Microsoft PS Class Driver"
+    ```
+
 
 - **別のフォルダにインストールしたい**  
   Startupフォルダのリンク先だけ変更すれば自由にフォルダは移動できます。  
