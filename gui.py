@@ -115,6 +115,11 @@ class App(ctk.CTk):
         self.geometry("400x350")
         self.title("ログイン")
 
+        self.lift()
+        self.attributes("-topmost", True) # 最前面に表示
+        # なぜか裏に行くことが多かったので追加
+        # TODO: 後で設定で変更できるようにする
+
         # credentials.keyが存在しない場合は作成する
         try:
             with open("credentials.key", "rb") as f:
