@@ -3,9 +3,11 @@ from tkinter import messagebox
 import asyncio
 from cryptography.fernet import Fernet
 
+# 暗号化キー
+# インストール時にランダム生成してもいいかも
 cipher = Fernet(b"Z2spcOpLQ8-sk-3LX93NST_MtHQnbv-hbpJgijY9LZQ=")
 
-
+# ログイン
 class LoginFrame(ctk.CTkFrame):
     def __init__(self, master, switch_to_main):
         super().__init__(master)
@@ -22,9 +24,12 @@ class LoginFrame(ctk.CTkFrame):
         self.button.pack(pady=10)
 
 
-class AttemptFrame(ctk.CTkFrame):
+# ログイン後の印刷設定
+class PrintFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
+
+        # ログイン中のアカウントを表示
         account_frame = ctk.CTkFrame(self, fg_color="transparent")
         account_frame.pack(fill="both", anchor="nw")
 
@@ -34,7 +39,9 @@ class AttemptFrame(ctk.CTkFrame):
         self.button = ctk.CTkButton(account_frame, text="アカウントを切り替え", command=self.logout)
         self.button.pack(anchor="w", pady=(2, 0))
 
-        # 用紙設定の横並び（ラベル + OptionMenu）
+
+        # 印刷設定
+        # 用紙
         paper_frame = ctk.CTkFrame(self, fg_color="transparent")
         paper_frame.pack(pady=(20, 10), anchor="nw")
 
@@ -47,11 +54,13 @@ class AttemptFrame(ctk.CTkFrame):
         sides_frame = ctk.CTkFrame(self, fg_color="transparent")
         sides_frame.pack(pady=(0, 0), anchor="nw")
 
+        # 印刷面(両面/片面)
         sides_label = ctk.CTkLabel(sides_frame, text="印刷面")
         sides_label.pack(side="left", padx=(0, 10))
         self.sides_select = ctk.CTkOptionMenu(sides_frame, values=["片面", "両面"])
         self.sides_select.pack(side="left")
 
+        # レイアウト
         n_in_one_frame = ctk.CTkFrame(self, fg_color="transparent")
         n_in_one_frame.pack(pady=(10, 0), anchor="nw")
         n_in_one_label = ctk.CTkLabel(n_in_one_frame, text="レイアウト")
@@ -59,13 +68,15 @@ class AttemptFrame(ctk.CTkFrame):
         self.n_in_one_select = ctk.CTkOptionMenu(n_in_one_frame, values=["1 in 1", "2 in 1", "4 in 1"])
         self.n_in_one_select.pack(side="left")
 
+        # 綴じ方向
         binding_frame = ctk.CTkFrame(self, fg_color="transparent")
         binding_frame.pack(pady=(10, 0), anchor="nw")
         binding_label = ctk.CTkLabel(binding_frame, text="綴じ方向")
         binding_label.pack(side="left", padx=(0, 10))
-        self.binding_select = ctk.CTkOptionMenu(binding_frame, values=["長編", "短編"])
+        self.binding_select = ctk.CTkOptionMenu(binding_frame, values=["長辺", "短辺"])
         self.binding_select.pack(side="left")
 
+        # 向き
         direction_frame = ctk.CTkFrame(self, fg_color="transparent")
         direction_frame.pack(pady=(10, 0), anchor="nw")
         direction_label = ctk.CTkLabel(direction_frame, text="印刷方向")
@@ -84,10 +95,14 @@ class AttemptFrame(ctk.CTkFrame):
         self.master.binding = self.binding_select.get()
         self.master.direction = self.direction_select.get()
 
+        # GUIを終了して印刷処理を開始
         self.master.on_closing()
+
     def logout(self):   
         self.master.login_frame.pack(expand=True, fill="both")
         self.pack_forget()
+        # credentials.keyを削除
+        # ファイル自体削除してもいいけど空のバイトで上書きしてる
         with open("credentials.key", "wb") as f:
             f.write(b"")
         self.master.id = ""
@@ -100,14 +115,15 @@ class App(ctk.CTk):
         self.geometry("400x350")
         self.title("ログイン")
 
-        # credentials.keyが存在しない場合は作成
+        # credentials.keyが存在しない場合は作成する
         try:
             with open("credentials.key", "rb") as f:
-                pass
+                pass 
         except FileNotFoundError:
             with open("credentials.key", "wb") as f:
                 f.write(b"")
 
+        # TODO: あとで存在確認の処理とまとめる
         with open("credentials.key", "rb") as f:
             encrypted_data = f.read().split(b'\n\n')
             if len(encrypted_data) == 2:
@@ -116,7 +132,7 @@ class App(ctk.CTk):
             else:
                 self.id = ""
                 self.password = ""
-        self.attempt_frame = AttemptFrame(self)
+        self.attempt_frame = PrintFrame(self)
         self.login_frame = LoginFrame(self, self.login_attempt)
         if not self.id or not self.password:
             self.login_frame.pack(expand=True, fill="both")
@@ -149,8 +165,9 @@ class App(ctk.CTk):
 
         self.id = id
         self.password = password
-        self.title = "印刷"
-        self.attempt_frame = AttemptFrame(self)
+        self.title = "印刷"  # TODO: なんか動かないので後で確認, 動作には問題ないのであとで
+        # IDとかを正しく描画するために再定義
+        self.attempt_frame = PrintFrame(self)
         self.login_frame.pack_forget()
         self.attempt_frame.pack(expand=True, fill="both")
         return
@@ -159,6 +176,6 @@ class App(ctk.CTk):
 if __name__ == "__main__":
     ctk.set_appearance_mode("dark") 
     ctk.set_default_color_theme("dark-blue") 
-    app = App(file_path="output.pdf")
+    app = App()
     app.mainloop()
     print("アプリケーションを終了しました。")

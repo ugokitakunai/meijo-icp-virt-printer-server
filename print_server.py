@@ -83,7 +83,7 @@ async def handle_client(conn, addr):
             settings=settings
         )
     except Exception as e:
-        messagebox.showerror("Error", f"プリントに失敗しました: {e}\nパスワードが正しいか確認してから再度印刷してください。")
+        messagebox.showerror("Error", f"プリントに失敗しました: {e}\nID, パスワードが正しいか確認してから再度印刷してください。")
     os.remove(filename)
 
 
