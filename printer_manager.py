@@ -2,7 +2,7 @@ import subprocess
 
 def _port_remove(printer_port_name: str) -> None:
     cmd = [
-        "cscript", r"C:/Windows/System32/Printing_Admin_Scripts/en-US/prnport.vbs",
+        "cscript", r"C:/Windows/System32/Printing_Admin_Scripts/ja-JP/prnport.vbs",
         "-d", "-r", printer_port_name
            ]
     with subprocess.Popen(cmd, stdin=None, stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True) as p:
@@ -23,7 +23,7 @@ def _printer_remove(printer_name: str) -> None:
 def _add_printer_port(printer_port_name) -> None:
     cmd = [
         "cscript",
-        r"C:/Windows/System32/Printing_Admin_Scripts/en-US/prnport.vbs",
+        r"C:/Windows/System32/Printing_Admin_Scripts/ja-JP/prnport.vbs",
         "-a", "-r", printer_port_name, "-h", "127.0.0.1", "-n", "9101", "-o", "raw"
     ]
     with subprocess.Popen(cmd, stdin=None, stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True) as p:
