@@ -40,7 +40,6 @@ async def run_print_server():
         print("Shutting down print server.")
     finally:
         s.close()
-        _uninstall_printer()
 
 async def _ps_to_pdf(filename):
     id = str(uuid.uuid4())
