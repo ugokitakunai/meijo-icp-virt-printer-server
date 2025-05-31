@@ -1,10 +1,15 @@
 # インストール方法
+1. Pythonをインストール
+2. Releaseから`Installer.exe`をダウンロード  
+3. 実行  
+4. インストール完了後、プリンター一覧に **Meijo ICP Virtual Printer** が表示されていることを確認
 
-1. Releaseから`Installer.exe`をダウンロード  
-2. 実行  
-3. インストール完了後、プリンター一覧に **Meijo ICP Virtual Printer** が表示されていることを確認
+Python 3.10.6で動作確認済みです
 
 # トラブルシューティング
+
+- **Can't not load DLL等のエラーが発生 / 印刷の設定画面が出てこない**
+  [配布サイト](https://learn.microsoft.com/ja-jp/cpp/windows/latest-supported-vc-redist?view=msvc-170)からVisual C++ 再頒布可能パッケージをインストールしてください
 
 - **ポートが不明のエラーが出てインストールできない**  
   Windowsの言語設定が日本語以外の場合にエラーが出ることがあります。  
@@ -13,7 +18,6 @@
     cscript "C:/Windows/System32/Printing_Admin_Scripts/en-US/prnport.vbs" -a -r "Meijo ICP Virtual Printer Port" -h "127.0.0.1" -n 9101 -o raw
     rundll32 printui.dll,PrintUIEntry /if /b "Meijo ICP Virtual Printer" /r "Meijo ICP Virtual Printer Port" /m "Microsoft PS Class Driver"
     ```
-
 
 - **別のフォルダにインストールしたい**  
   Startupフォルダのリンク先だけ変更すれば自由にフォルダは移動できます。  
