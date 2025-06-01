@@ -7,13 +7,13 @@ import json
 from get_settings import get_settings
 app_settings = get_settings()
 
+outdated = False
+
 if app_settings.get("version_check", True):
     if check_update.check_update():
         outdated = True
     else:
         outdated = False
-else:
-    outdated = False
 
 printer_name = "Meijo ICP Virtual Printer"
 printer_port_name = "Meijo ICP Virtual Printer Port"
@@ -68,6 +68,8 @@ async def webprint():
         
 
 async def handle_client(conn, addr):
+    global outdated # UnboundLocalErrorの対処
+    
     print(f"Connection from {addr}")
     with open("icp_data.ps", "wb") as f:
         while True:
