@@ -1,0 +1,4 @@
+{
+    "version_check" : true,              // 起動時のバージョンチェック(true/false)
+    "always_top_window" : true           // 常に最前面に表示(true/false)
+}

@@ -1,6 +1,19 @@
 import socket, atexit, subprocess, asyncio, os, uuid
 from printer_manager import install_printer, uninstall_printer
 from tkinter import messagebox
+import check_update
+import json
+
+from get_settings import get_settings
+app_settings = get_settings()
+
+if app_settings.get("version_check", True):
+    if check_update.check_update():
+        outdated = True
+    else:
+        outdated = False
+else:
+    outdated = False
 
 printer_name = "Meijo ICP Virtual Printer"
 printer_port_name = "Meijo ICP Virtual Printer Port"
@@ -68,6 +81,10 @@ async def handle_client(conn, addr):
         print("Data saved to 'icp_data.ps'")
     conn.close()
     filename = await _ps_to_pdf(filename="icp_data.ps")
+    if outdated:
+        messagebox.showinfo("Info", "新しいバージョンがリリースされました。\nアップデートをおすすめします。")
+        outdated = False # 何回も出ると鬱陶しいので1起動ごとに一回
+        return
     import gui
     app = gui.App()
     app.mainloop()
