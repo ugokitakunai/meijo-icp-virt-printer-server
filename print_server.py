@@ -86,7 +86,6 @@ async def handle_client(conn, addr):
     if outdated:
         messagebox.showinfo("Info", "新しいバージョンがリリースされました。\nアップデートをおすすめします。")
         outdated = False # 何回も出ると鬱陶しいので1起動ごとに一回
-        return
     import gui
     app = gui.App()
     app.mainloop()
