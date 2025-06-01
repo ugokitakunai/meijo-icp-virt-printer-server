@@ -69,7 +69,7 @@ async def webprint():
 
 async def handle_client(conn, addr):
     global outdated # UnboundLocalErrorの対処
-    
+
     print(f"Connection from {addr}")
     with open("icp_data.ps", "wb") as f:
         while True:
@@ -91,13 +91,15 @@ async def handle_client(conn, addr):
     app = gui.App()
     app.mainloop()
 
-    settings = app.settings
     if not app.success:
-        messagebox.showinfo("Info", "印刷がキャンセルされました。")
         if os.path.exists(filename): # 例外発生防止のif
             os.remove(filename)
         return
+    
+    settings = app.settings
+
     import sslvpn
+
     try:
         await sslvpn.do_print_icp(
             job_id="VirtualPrinterJob",
