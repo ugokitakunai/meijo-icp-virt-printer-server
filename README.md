@@ -1,10 +1,7 @@
 ## インストール方法
-1. Python, Visual C++再頒布可能パッケージをインストール
-2. Releaseから`Installer.exe`をダウンロード  
-3. 実行  
-4. インストール完了後、プリンター一覧に **Meijo ICP Virtual Printer** が表示されていることを確認
-
-Python 3.13.3で動作確認済みです
+1. Releaseから`Installer.exe`をダウンロード  
+2. 実行  
+3. インストール完了後、プリンター一覧に **Meijo ICP Virtual Printer** が表示されていることを確認
 
 ## 印刷設定について
   Wordなどにある印刷設定はpdfを作成するために使用されるだけで、In Campus Printやこれには反映されません。
