@@ -148,7 +148,8 @@ class App(ctk.CTk):
             messagebox.showerror("エラー", f"予期しないエラーが発生しました: {e}")
             self.destroy()
 
-            
+        self.success = False
+
         self.attempt_frame = PrintFrame(self)
         self.login_frame = LoginFrame(self, self.login_attempt)
         if not self.id or not self.password:
@@ -165,6 +166,8 @@ class App(ctk.CTk):
             "direction": self.direction,
         }
         self.settings = settings
+        self.success = True
+        # GUIを閉じる
         self.destroy()
 
     def login_attempt(self, id, password):

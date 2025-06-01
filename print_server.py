@@ -73,6 +73,10 @@ async def handle_client(conn, addr):
     app.mainloop()
 
     settings = app.settings
+    if not app.success:
+        messagebox.showinfo("Info", "印刷がキャンセルされました。")
+        os.remove(filename)
+        return
     import sslvpn
     try:
         await sslvpn.do_print_icp(
@@ -84,7 +88,8 @@ async def handle_client(conn, addr):
         )
     except Exception as e:
         messagebox.showerror("Error", f"プリントに失敗しました: {e}\nID, パスワードが正しいか確認してから再度印刷してください。")
-    os.remove(filename)
+    finally:
+        os.remove(filename)
 
 
 async def main():
