@@ -37,7 +37,7 @@ CopyFiles "$TEMP\MPS_Setup\lib\*.*" "$INSTDIR\lib"
   SetOutPath "$INSTDIR"
 
 File "python.zip"
-ExecWait '"$TEMP\MPS_Setup\7z.exe" x "$INSTDIR\python.zip" -o"$INSTDIR"' 
+ExecWait '"$TEMP\MPS_Setup\7z.exe" x "$INSTDIR\python.zip" -o"$INSTDIR" -y' 
 
   File "..\*.py"
   File "..\requirements.txt"
