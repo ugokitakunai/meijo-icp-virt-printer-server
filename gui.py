@@ -1,11 +1,16 @@
+import cryptography.fernet
 import customtkinter as ctk
 from tkinter import messagebox
 import asyncio
 from cryptography.fernet import Fernet
+import win32crypt
+import cryptography
 
 # 暗号化キー
-# インストール時にランダム生成してもいいかも
-cipher = Fernet(b"Z2spcOpLQ8-sk-3LX93NST_MtHQnbv-hbpJgijY9LZQ=")
+with open("fernet_key.dat", "rb") as f:
+    encrypted_key = f.read()
+key = win32crypt.CryptUnprotectData(encrypted_key, None, None, None, 0)[1]
+cipher = Fernet(key)
 
 # ログイン
 class LoginFrame(ctk.CTkFrame):
@@ -121,22 +126,29 @@ class App(ctk.CTk):
         # TODO: 後で設定で変更できるようにする
 
         # credentials.keyが存在しない場合は作成する
-        try:
+        try: 
             with open("credentials.key", "rb") as f:
-                pass 
+                encrypted_data = f.read().split(b'\n\n')
+                if len(encrypted_data) == 2:
+                    self.id = cipher.decrypt(encrypted_data[0]).decode()
+                    self.password = cipher.decrypt(encrypted_data[1]).decode()
+                else:
+                    self.id = ""
+                    self.password = ""
+        except cryptography.fernet.InvalidToken:
+            messagebox.showerror("エラー", "暗号化キーが無効です。再度ログインしてください。")
+            self.id = ""
+            self.password = ""
         except FileNotFoundError:
             with open("credentials.key", "wb") as f:
                 f.write(b"")
+            self.id = ""
+            self.password = ""
+        except Exception as e:
+            messagebox.showerror("エラー", f"予期しないエラーが発生しました: {e}")
+            self.destroy()
 
-        # TODO: あとで存在確認の処理とまとめる
-        with open("credentials.key", "rb") as f:
-            encrypted_data = f.read().split(b'\n\n')
-            if len(encrypted_data) == 2:
-                self.id = cipher.decrypt(encrypted_data[0]).decode()
-                self.password = cipher.decrypt(encrypted_data[1]).decode()
-            else:
-                self.id = ""
-                self.password = ""
+            
         self.attempt_frame = PrintFrame(self)
         self.login_frame = LoginFrame(self, self.login_attempt)
         if not self.id or not self.password:

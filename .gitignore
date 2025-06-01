@@ -2,3 +2,5 @@ credentials.key
 __pycache__/
 *.pyc
 .env
+Installer.exe
+fernet_key.dat
