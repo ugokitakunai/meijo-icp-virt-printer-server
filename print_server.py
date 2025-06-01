@@ -75,7 +75,8 @@ async def handle_client(conn, addr):
     settings = app.settings
     if not app.success:
         messagebox.showinfo("Info", "印刷がキャンセルされました。")
-        os.remove(filename)
+        if os.path.exists(filename): # 例外発生防止のif
+            os.remove(filename)
         return
     import sslvpn
     try:
@@ -89,7 +90,8 @@ async def handle_client(conn, addr):
     except Exception as e:
         messagebox.showerror("Error", f"プリントに失敗しました: {e}\nID, パスワードが正しいか確認してから再度印刷してください。")
     finally:
-        os.remove(filename)
+        if os.path.exists(filename):
+            os.remove(filename)
 
 
 async def main():
