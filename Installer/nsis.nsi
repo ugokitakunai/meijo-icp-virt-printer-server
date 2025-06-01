@@ -32,6 +32,9 @@ CopyFiles "$TEMP\MPS_Setup\Resource\*.*" "$INSTDIR\Resource"
 CreateDirectory "$INSTDIR\iccprofiles"
 CopyFiles "$TEMP\MPS_Setup\iccprofiles\*.*" "$INSTDIR\iccprofiles"
 
+CreateDirectory "$INSTDIR\doc"
+CopyFiles "$TEMP\MPS_Setup\doc\COPYING" "$INSTDIR\doc"
+
 CreateDirectory "$INSTDIR\lib"
 CopyFiles "$TEMP\MPS_Setup\lib\*.*" "$INSTDIR\lib"
   SetOutPath "$INSTDIR"
