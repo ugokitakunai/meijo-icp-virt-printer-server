@@ -33,15 +33,19 @@ def _add_printer(printer_name, printer_port_name) -> None:
     cmd = [
         "rundll32", "printui.dll,PrintUIEntry",
         "/if", "/b", printer_name,
-        "/r", printer_port_name, "/m", "Microsoft PS Class Driver"
+        "/r", printer_port_name, "/m", "Microsoft Print To PDF"
     ]
     with subprocess.Popen(cmd, stdin=None, stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True) as p:
         stdout, _ = p.communicate()
 
 def install_printer(printer_name: str = "Meijo ICP Virtual Printer", printer_port_name: str = "Meijo ICP Virtual Printer Port") -> None:
     if printer_exists(printer_name):
-        print(f"Printer '{printer_name}' already exists. Skipping installation.")
-        return
+        print(f"Printer '{printer_name}' already exists. Uninstalling.")
+        uninstall_printer(printer_name, printer_port_name)
+
+        if printer_exists(printer_name):
+            print(f"Failed to uninstall printer '{printer_name}'.")
+            return
     print("installing port")
     _add_printer_port(printer_port_name)
     print("installing printer")

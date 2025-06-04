@@ -112,6 +112,7 @@ async def handle_client(conn, addr):
     finally:
         if os.path.exists(filename):
             os.remove(filename)
+        del app
 
 
 async def main():
