@@ -54,13 +54,6 @@ async def run_print_server():
     finally:
         s.close()
 
-async def _ps_to_pdf(filename):
-    id = str(uuid.uuid4())
-    subprocess.run(["./bin/gswin64c.exe", "-dNOPAUSE", "-dBATCH",
-                    "-sDEVICE=pdfwrite", f"-sOutputFile={id}.pdf", filename],
-                   check=True)
-    os.remove(filename)
-    return id + ".pdf"
 
 async def webprint():
     import sslvpn
@@ -69,9 +62,10 @@ async def webprint():
 
 async def handle_client(conn, addr):
     global outdated # UnboundLocalErrorの対処
+    filename = f"icp_data_{uuid.uuid4()}.pdf"
 
     print(f"Connection from {addr}")
-    with open("icp_data.ps", "wb") as f:
+    with open(filename, "wb") as f:
         while True:
             try:
                 data = await asyncio.get_event_loop().sock_recv(conn, 1024)
@@ -80,9 +74,8 @@ async def handle_client(conn, addr):
             if not data:
                 break
             f.write(data)
-        print("Data saved to 'icp_data.ps'")
+        print(f"Data saved to '{filename}'")
     conn.close()
-    filename = await _ps_to_pdf(filename="icp_data.ps")
     if outdated:
         messagebox.showinfo("Info", "新しいバージョンがリリースされました。\nアップデートをおすすめします。")
         outdated = False # 何回も出ると鬱陶しいので1起動ごとに一回
